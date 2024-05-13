@@ -37,6 +37,13 @@ async function run() {
         res.send(result);
      })
 
+     app.get('/myAdd/:email', async(req, res) =>{
+      console.log(req.params.email)
+      const result = await restaurantCollection.find({email: req.params.email}).toArray();
+      res.send(result);
+    })
+
+
 
      app.post('/add', async(req,res)=>{
       const addFood = req.body;
