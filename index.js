@@ -37,9 +37,21 @@ async function run() {
         res.send(result);
      })
 
+     app.get('/purchase', async(req, res) =>{
+      const cursor = purchaseCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+   })
+
      app.get('/myAdd/:email', async(req, res) =>{
       console.log(req.params.email)
       const result = await restaurantCollection.find({email: req.params.email}).toArray();
+      res.send(result);
+    })
+
+     app.get('/myOrder/:email', async(req, res) =>{
+      console.log(req.params.email)
+      const result = await purchaseCollection.find({email: req.params.email}).toArray();
       res.send(result);
     })
 
