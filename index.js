@@ -7,7 +7,15 @@ const port = process.env.PORT || 5000;
 
 
 // middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://restaurant-management-da068.web.app",
+    "https://restaurant-management-da068.firebaseapp.com"
+  ],
+
+  
+}));
 app.use(express.json());
 
 
