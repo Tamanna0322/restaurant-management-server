@@ -67,6 +67,28 @@ async function run() {
       res.send(result);
     })
 
+   
+    app.put('/add/:id', async(req, res) => {
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)}
+      const options = {upsert: true};
+      const updatedItem = req.body;
+      const restaurant = {
+        $set: {
+             photo: updatedItem.photo,
+             foodName: updatedItem.foodName,
+             category: updatedItem.category,
+             quantity: updatedItem.quantity,
+             description: updatedItem.description,
+             price: updatedItem.price,
+             origin: updatedItem.origin,
+        }
+      }
+      const result = await restaurantCollection.updateOne(filter, restaurant, options)
+      res.send(result);
+    })
+
+
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
