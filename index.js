@@ -29,6 +29,7 @@ async function run() {
     // await client.connect();
      
      const restaurantCollection = client.db('restaurantDB').collection('add');
+     const purchaseCollection = client.db('restaurantDB').collection('purchase');
 
      app.get('/add', async(req, res) =>{
         const cursor = restaurantCollection.find();
@@ -41,6 +42,14 @@ async function run() {
       const addFood = req.body;
       console.log(addFood)
       const result = await restaurantCollection.insertOne(addFood);
+      res.send(result);
+    })
+
+
+     app.post('/purchase', async(req,res)=>{
+      const addPurchase = req.body;
+      console.log(addPurchase)
+      const result = await purchaseCollection.insertOne(addPurchase);
       res.send(result);
     })
 
