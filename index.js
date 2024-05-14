@@ -38,6 +38,7 @@ async function run() {
      
      const restaurantCollection = client.db('restaurantDB').collection('add');
      const purchaseCollection = client.db('restaurantDB').collection('purchase');
+     const usersCollection = client.db('restaurantDB').collection('users');
 
      app.get('/add', async(req, res) =>{
         const cursor = restaurantCollection.find();
@@ -70,6 +71,20 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/user/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const user = await usersCollection.find(query).toArray();
+      res.send(user);
+    });
+
+    app.get('/food/:id', async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) };
+  const result = await restaurantCollection.findOne(query);
+  res.send(result);
+});
+
 
 
      app.post('/add', async(req,res)=>{
@@ -84,6 +99,10 @@ async function run() {
       const addPurchase = req.body;
       console.log(addPurchase)
       const result = await purchaseCollection.insertOne(addPurchase);
+      const filter = {email: addPurchase.email}
+      const update = {$inc: {orderCount: 1}}
+      const options ={upsert: true}
+      await usersCollection.updateOne(filter, update, options)
       res.send(result);
     })
 
