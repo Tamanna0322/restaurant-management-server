@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const jwt = require('jsonwebtoken')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const app = express();
@@ -14,7 +15,7 @@ app.use(cors({
     "https://restaurant-management-da068.firebaseapp.com"
   ],
 
-  
+   credentials: true
 }));
 app.use(express.json());
 
@@ -39,6 +40,19 @@ async function run() {
      const restaurantCollection = client.db('restaurantDB').collection('add');
      const purchaseCollection = client.db('restaurantDB').collection('purchase');
      const usersCollection = client.db('restaurantDB').collection('users');
+
+
+
+    //  jwt token
+    app.post('/jwt', async(req, res) =>{
+      const user = req.body
+      console.log('user token', user);
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '7d',
+      })
+      res.send({token})
+    })
+
 
      app.get('/add', async(req, res) =>{
         const cursor = restaurantCollection.find();
